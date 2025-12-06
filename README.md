@@ -9,3 +9,11 @@
 *DOMAIN*:JAVA PROGRAMMING
 
 *INTERN ID*:CT04DR2580
+
+*OUTPUT*:
+--- WEATHER DATA (Tokyo Example) ---
+Temperature: 18.3 °C
+Wind Speed: 12.4 km/h
+Wind Direction: 87°
+Weather Code: 3
+Time: 2025-02-15T10:00
