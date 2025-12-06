@@ -1,0 +1,54 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import org.json.JSONObject;
+
+public class WeatherClient {
+
+    public static void main(String[] args) {
+        String apiUrl = "https://api.open-meteo.com/v1/forecast?latitude=35&longitude=139&current_weather=true";
+
+        try {
+            String response = sendGET(apiUrl);
+            parseWeatherJSON(response);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Sends a GET request to the provided API URL
+     */
+    public static String sendGET(String apiUrl) throws Exception {
+        URL url = new URL(apiUrl);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        String inputLine;
+        StringBuilder response = new StringBuilder();
+
+        while ((inputLine = reader.readLine()) != null) {
+            response.append(inputLine);
+        }
+        reader.close();
+
+        return response.toString();
+    }
+
+    /**
+     * Parses JSON weather response and prints structured output
+     */
+    public static void parseWeatherJSON(String jsonResponse) {
+        JSONObject obj = new JSONObject(jsonResponse);
+        JSONObject current = obj.getJSONObject("current_weather");
+
+        System.out.println("\n--- WEATHER DATA (Tokyo Example) ---");
+        System.out.println("Temperature: " + current.getDouble("temperature") + " °C");
+        System.out.println("Wind Speed: " + current.getDouble("windspeed") + " km/h");
+        System.out.println("Wind Direction: " + current.getDouble("winddirection") + "°");
+        System.out.println("Weather Code: " + current.getInt("weathercode"));
+        System.out.println("Time: " + current.getString("time"));
+    }
+}
